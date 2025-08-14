@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import TodayLifts from './TodayLifts';
 import ProgressChart from './ProgressChart';
+import ParetoChart from './ParetoChart';
 import LiftHistory from './LiftHistory';
 
 const DashboardGrid = styled.div`
@@ -13,41 +14,42 @@ const DashboardGrid = styled.div`
   @media (min-width: 768px) {
     grid-template-columns: 35fr 65fr;
     grid-template-areas: 
-      "today chart"
-      "history history";
+      "sidebar charts"
+      "sidebar charts";
   }
 
   @media (min-width: 1024px) {
     grid-template-areas: 
-      "today chart"
-      "history chart";
+      "sidebar charts"
+      "sidebar charts";
   }
 `;
 
-const TodaySection = styled.div`
-  grid-area: today;
+const SidebarSection = styled.div`
+  grid-area: sidebar;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 `;
 
-const ChartSection = styled.div`
-  grid-area: chart;
-`;
-
-const HistorySection = styled.div`
-  grid-area: history;
+const ChartsSection = styled.div`
+  grid-area: charts;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 `;
 
 const Dashboard: React.FC = () => {
   return (
     <DashboardGrid>
-      <TodaySection>
+      <SidebarSection>
         <TodayLifts />
-      </TodaySection>
-      <ChartSection>
-        <ProgressChart />
-      </ChartSection>
-      <HistorySection>
         <LiftHistory />
-      </HistorySection>
+      </SidebarSection>
+      <ChartsSection>
+        <ProgressChart />
+        <ParetoChart />
+      </ChartsSection>
     </DashboardGrid>
   );
 };
