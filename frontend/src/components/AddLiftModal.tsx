@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Select from 'react-select';
 import { useLiftContext } from '../context/LiftContext';
 import { Set } from '../types';
+import { COMMON_EXERCISES, Exercise } from '../constants/exercises';
 
 const Modal = styled.div<{ isOpen: boolean }>`
   position: fixed;
@@ -187,42 +188,10 @@ interface AddLiftModalProps {
   onClose: () => void;
 }
 
-const commonLifts = [
-  { value: 'Bench Press', label: 'Bench Press' },
-  { value: 'Squat', label: 'Squat' },
-  { value: 'Deadlift', label: 'Deadlift' },
-  { value: 'Overhead Press', label: 'Overhead Press' },
-  { value: 'Barbell Row', label: 'Barbell Row' },
-  { value: 'Pull-ups', label: 'Pull-ups' },
-  { value: 'Chin-ups', label: 'Chin-ups' },
-  { value: 'Dips', label: 'Dips' },
-  { value: 'Incline Bench Press', label: 'Incline Bench Press' },
-  { value: 'Decline Bench Press', label: 'Decline Bench Press' },
-  { value: 'Front Squat', label: 'Front Squat' },
-  { value: 'Romanian Deadlift', label: 'Romanian Deadlift' },
-  { value: 'Sumo Deadlift', label: 'Sumo Deadlift' },
-  { value: 'Close-Grip Bench Press', label: 'Close-Grip Bench Press' },
-  { value: 'Wide-Grip Bench Press', label: 'Wide-Grip Bench Press' },
-  { value: 'Lat Pulldown', label: 'Lat Pulldown' },
-  { value: 'Seated Row', label: 'Seated Row' },
-  { value: 'T-Bar Row', label: 'T-Bar Row' },
-  { value: 'Shoulder Press', label: 'Shoulder Press' },
-  { value: 'Lateral Raises', label: 'Lateral Raises' },
-  { value: 'Rear Delt Flyes', label: 'Rear Delt Flyes' },
-  { value: 'Bicep Curls', label: 'Bicep Curls' },
-  { value: 'Hammer Curls', label: 'Hammer Curls' },
-  { value: 'Tricep Extensions', label: 'Tricep Extensions' },
-  { value: 'French Press', label: 'French Press' },
-  { value: 'Leg Press', label: 'Leg Press' },
-  { value: 'Leg Curls', label: 'Leg Curls' },
-  { value: 'Leg Extensions', label: 'Leg Extensions' },
-  { value: 'Calf Raises', label: 'Calf Raises' },
-  { value: 'Shrugs', label: 'Shrugs' }
-];
 
 const AddLiftModal: React.FC<AddLiftModalProps> = ({ isOpen, onClose }) => {
   const { addLift } = useLiftContext();
-  const [selectedExercise, setSelectedExercise] = useState<{ value: string; label: string } | null>(null);
+  const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
   const [sets, setSets] = useState<Set[]>([{ weight: 0, reps: 0 }]);
   const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split('T')[0]);
 
@@ -290,7 +259,7 @@ const AddLiftModal: React.FC<AddLiftModalProps> = ({ isOpen, onClose }) => {
             <Select
               value={selectedExercise}
               onChange={setSelectedExercise}
-              options={commonLifts}
+              options={COMMON_EXERCISES}
               isSearchable
               placeholder="Search or select exercise..."
               styles={{
