@@ -11,7 +11,7 @@ const DashboardGrid = styled.div`
   margin-bottom: 100px; // Space for floating add button
 
   @media (min-width: 768px) {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 35fr 65fr;
     grid-template-areas: 
       "today chart"
       "history history";

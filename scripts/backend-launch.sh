@@ -1,10 +1,15 @@
 #!/bin/bash
 
-# Lift Tracker Backend Launch Script
+# Vibe Gains Backend Launch Script
 # Usage: ./launch.sh [mode]
 # Modes: dev (default), prod, test
 
 set -e  # Exit on any error
+
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Get the project root (parent of scripts directory)
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
 # Default mode
 MODE="${1:-dev}"
@@ -26,7 +31,7 @@ port_in_use() {
     lsof -i :$1 > /dev/null 2>&1
 }
 
-echo -e "${BLUE}🚀 Lift Tracker Backend Launcher${NC}"
+echo -e "${BLUE}🚀 Vibe Gains Backend Launcher${NC}"
 echo "=================================="
 echo "Mode: $MODE"
 echo ""
@@ -62,9 +67,9 @@ if port_in_use 3001; then
 fi
 
 # Create data directory if it doesn't exist
-if [ ! -d "../data" ]; then
+if [ ! -d "$PROJECT_ROOT/data" ]; then
     echo -e "${YELLOW}📁 Creating data directory...${NC}"
-    mkdir -p ../data
+    mkdir -p "$PROJECT_ROOT/data"
 fi
 
 case $MODE in

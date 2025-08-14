@@ -1,4 +1,4 @@
-class LiftTracker {
+class VibeGains {
     constructor() {
         this.lifts = this.loadLiftsFromStorage();
         this.selectedLift = '';
@@ -169,12 +169,12 @@ class LiftTracker {
     }
 
     loadLiftsFromStorage() {
-        const stored = localStorage.getItem('liftTracker');
+        const stored = localStorage.getItem('vibeGains');
         return stored ? JSON.parse(stored) : [];
     }
 
     saveLiftsToStorage() {
-        localStorage.setItem('liftTracker', JSON.stringify(this.lifts));
+        localStorage.setItem('vibeGains', JSON.stringify(this.lifts));
     }
 
     renderDashboard() {
@@ -317,5 +317,5 @@ class LiftTracker {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    new LiftTracker();
+    new VibeGains();
 });

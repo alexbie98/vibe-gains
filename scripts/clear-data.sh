@@ -1,10 +1,15 @@
 #!/bin/bash
 
-# Clear Lift Tracker Database Script
+# Clear Vibe Gains Database Script
 # Usage: ./clear-data.sh
 # This script will delete all lifts and users from the database
 
-DATABASE_PATH="../data/lifts.db"
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Get the project root (parent of scripts directory)
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+
+DATABASE_PATH="$PROJECT_ROOT/data/lifts.db"
 
 # Colors for output
 RED='\033[0;31m'
@@ -13,7 +18,7 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-echo -e "${BLUE}🗑️  Lift Tracker Data Cleanup${NC}"
+echo -e "${BLUE}🗑️  Vibe Gains Data Cleanup${NC}"
 echo "================================="
 
 # Check if database file exists

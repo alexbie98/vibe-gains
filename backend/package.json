@@ -1,7 +1,7 @@
 {
-  "name": "lift-tracker-backend",
+  "name": "vibe-gains-backend",
   "version": "1.0.0",
-  "description": "Backend API for Lift Tracker application",
+  "description": "Backend API for Vibe Gains application",
   "main": "dist/server.js",
   "scripts": {
     "start": "node dist/server.js",

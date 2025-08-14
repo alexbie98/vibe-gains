@@ -12,7 +12,7 @@ const App: React.FC = () => {
       <GlobalStyle />
       <Container>
         <Header>
-          <h1>💪 Lift Tracker</h1>
+          <h1>💪 Vibe Gains</h1>
         </Header>
         <Dashboard />
         <AddButton onClick={() => setIsModalOpen(true)}>

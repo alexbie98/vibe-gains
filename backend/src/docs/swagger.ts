@@ -4,11 +4,11 @@ import { SwaggerDefinition } from 'swagger-jsdoc';
 const swaggerDefinition: SwaggerDefinition = {
   openapi: '3.0.0',
   info: {
-    title: 'Lift Tracker API',
+    title: 'Vibe Gains API',
     version: '1.0.0',
     description: 'A comprehensive API for tracking workout lifts and progress',
     contact: {
-      name: 'Lift Tracker API Support',
+      name: 'Vibe Gains API Support',
     },
   },
   servers: [
@@ -191,7 +191,7 @@ const swaggerDefinition: SwaggerDefinition = {
           },
           message: {
             type: 'string',
-            example: 'Lift Tracker API is running',
+            example: 'Vibe Gains API is running',
           },
           timestamp: {
             type: 'string',

@@ -38,7 +38,7 @@ app.use(createRateLimit());
 // Swagger documentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
   customCss: '.swagger-ui .topbar { display: none }',
-  customSiteTitle: 'Lift Tracker API Documentation'
+  customSiteTitle: 'Vibe Gains API Documentation'
 }));
 
 // Swagger JSON endpoint
@@ -65,7 +65,7 @@ app.get('/api-docs.json', (req, res) => {
 app.get('/health', (req, res) => {
   res.json({
     success: true,
-    message: 'Lift Tracker API is running',
+    message: 'Vibe Gains API is running',
     timestamp: new Date().toISOString()
   });
 });
@@ -92,7 +92,7 @@ const startServer = async () => {
     console.log('Database initialized successfully');
 
     app.listen(PORT, () => {
-      console.log(`🚀 Lift Tracker API server running on port ${PORT}`);
+      console.log(`🚀 Vibe Gains API server running on port ${PORT}`);
       console.log(`📊 Health check: http://localhost:${PORT}/health`);
       console.log(`💪 API endpoints: http://localhost:${PORT}/api`);
     });

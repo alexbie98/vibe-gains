@@ -1,10 +1,15 @@
 #!/bin/bash
 
-# Lift Tracker Full Stack Launch Script
+# Vibe Gains Full Stack Launch Script
 # Usage: ./launch.sh [mode]
 # Modes: dev (default), frontend, backend, prod, test, clear-data
 
 set -e  # Exit on any error
+
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Get the project root (parent of scripts directory)
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
 # Default mode
 MODE="${1:-dev}"
@@ -26,7 +31,7 @@ port_in_use() {
     lsof -i :$1 > /dev/null 2>&1
 }
 
-echo -e "${BLUE}🚀 Lift Tracker Full Stack Launcher${NC}"
+echo -e "${BLUE}🚀 Vibe Gains Full Stack Launcher${NC}"
 echo "===================================="
 echo "Mode: $MODE"
 echo ""
@@ -61,20 +66,19 @@ case $MODE in
         
         # Install dependencies
         echo -e "${YELLOW}📦 Installing backend dependencies...${NC}"
-        cd ../backend
+        cd "$PROJECT_ROOT/backend"
         if [ ! -d "node_modules" ]; then
             npm install
         fi
         
         echo -e "${YELLOW}📦 Installing frontend dependencies...${NC}"
-        cd ../frontend
+        cd "$PROJECT_ROOT/frontend"
         if [ ! -d "node_modules" ]; then
             npm install
         fi
-        cd ../scripts
         
         echo -e "${YELLOW}🔧 Building backend...${NC}"
-        cd ../backend && npm run build && cd ../scripts
+        cd "$PROJECT_ROOT/backend" && npm run build
         
         echo -e "${YELLOW}🌟 Starting development servers...${NC}"
         echo "Frontend: http://localhost:3000"
@@ -85,14 +89,14 @@ case $MODE in
         echo ""
         
         # Start backend in background
-        cd ../backend && npm run dev &
+        cd "$PROJECT_ROOT/backend" && npm run dev &
         BACKEND_PID=$!
         
         # Wait for backend to start
         sleep 3
         
         # Start frontend
-        cd ../frontend && npm start &
+        cd "$PROJECT_ROOT/frontend" && npm start &
         FRONTEND_PID=$!
         
         # Cleanup function
@@ -110,7 +114,7 @@ case $MODE in
     
     "frontend")
         echo -e "${YELLOW}🎨 Starting frontend development server...${NC}"
-        cd ../frontend
+        cd "$PROJECT_ROOT/frontend"
         if [ ! -d "node_modules" ]; then
             npm install
         fi
@@ -119,22 +123,20 @@ case $MODE in
     
     "backend")
         echo -e "${YELLOW}⚙️  Starting backend development server...${NC}"
-        cd ../backend
-        ../scripts/backend-launch.sh dev
+        cd "$PROJECT_ROOT/backend"
+        "$SCRIPT_DIR/backend-launch.sh" dev
         ;;
     
     "prod")
         echo -e "${YELLOW}🏗️  Building for production...${NC}"
         
         # Build backend
-        cd ../backend
+        cd "$PROJECT_ROOT/backend"
         npm run build
-        cd ../scripts
         
         # Build frontend
-        cd ../frontend
+        cd "$PROJECT_ROOT/frontend"
         npm run build
-        cd ../scripts
         
         echo -e "${GREEN}✅ Production build completed${NC}"
         echo "Built files:"
@@ -148,13 +150,13 @@ case $MODE in
     
     "test")
         echo -e "${YELLOW}🧪 Running API tests...${NC}"
-        cd ../backend
-        ../scripts/backend-launch.sh test
+        cd "$PROJECT_ROOT/backend"
+        "$SCRIPT_DIR/backend-launch.sh" test
         ;;
     
     "clear-data")
         echo -e "${YELLOW}🗑️  Clearing database...${NC}"
-        ../scripts/clear-data.sh
+        "$SCRIPT_DIR/clear-data.sh"
         ;;
     
     *)
