@@ -123,9 +123,18 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload, label })
     return null;
   }
 
+  // Format the label from unix timestamp to readable date
+  const formattedDate = typeof label === 'number' 
+    ? new Date(label).toLocaleDateString('en-US', { 
+        month: '2-digit', 
+        day: '2-digit', 
+        year: '2-digit' 
+      })
+    : label;
+
   return (
     <CustomTooltipContainer>
-      <TooltipLabel>{label}</TooltipLabel>
+      <TooltipLabel>{formattedDate}</TooltipLabel>
       {payload.map((entry, index) => {
         const exercise = entry.dataKey;
         const oneRepMax = entry.value;
