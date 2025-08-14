@@ -11,7 +11,7 @@ const Container = styled.div`
   padding: 25px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.1);
   backdrop-filter: blur(10px);
-  height: 400px;
+  height: 500px;
 `;
 
 const HeaderContainer = styled.div`
@@ -46,14 +46,14 @@ const TimeRangeSelector = styled.select`
 `;
 
 const ChartContainer = styled.div`
-  height: 400px;
+  height: 500px;
 `;
 
 const EmptyState = styled.div`
   text-align: center;
   color: #718096;
   padding: 40px 20px;
-  height: 400px;
+  height: 500px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -329,7 +329,7 @@ const ProgressChart: React.FC = () => {
               }}
             />
             <YAxis 
-              label={{ value: 'Estimated 1RM (lbs)', angle: -90, position: 'insideLeft' }}
+              label={{ value: '1RM', angle: -90, position: 'insideLeft' }}
               tick={{ fontSize: 12 }}
               width={80}
             />
