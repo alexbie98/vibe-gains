@@ -102,24 +102,9 @@ case $MODE in
         ;;
     
     "test")
-        echo -e "${YELLOW}🧪 Running comprehensive API tests...${NC}"
+        echo -e "${YELLOW}🧪 Running Jest unit and integration tests...${NC}"
         echo ""
-        
-        # Check if server is running
-        if ! port_in_use 3001; then
-            echo -e "${RED}❌ Backend server is not running on port 3001${NC}"
-            echo "Please start the server first with: ./launch.sh dev"
-            exit 1
-        fi
-        
-        # Run the comprehensive test suite
-        if [ -f "test-api.sh" ]; then
-            ./test-api.sh
-        else
-            echo -e "${YELLOW}⚠️  Comprehensive test script not found${NC}"
-            echo "Running basic health check instead..."
-            curl -s http://localhost:3001/health | jq '.' || echo "Health check failed"
-        fi
+        npm test
         ;;
     
     *)
@@ -128,7 +113,7 @@ case $MODE in
         echo "Available modes:"
         echo "  dev  - Start development server with hot reload"
         echo "  prod - Build and start production server"
-        echo "  test - Run API test suite (requires running server)"
+        echo "  test - Run Jest unit and integration tests"
         echo ""
         echo "Usage: ./launch.sh [mode]"
         exit 1

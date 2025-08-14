@@ -1,0 +1,35 @@
+{
+  "name": "vibe-gains",
+  "version": "1.0.0",
+  "description": "A full-stack lift tracking application that helps you monitor your strength training progress and visualize your gains over time. This project was vibecoded by Claude. I have no idea what's going on in the code or even this README.",
+  "main": "index.js",
+  "scripts": {
+    "test": "./scripts/launch.sh test",
+    "test:frontend": "cd frontend && npm test -- --watchAll=false",
+    "test:backend": "cd backend && npm test",
+    "lint:frontend": "cd frontend && npm run lint",
+    "lint:backend": "cd backend && npm run lint || echo 'Backend linting not configured'",
+    "typecheck:frontend": "cd frontend && npm run typecheck || cd frontend && npx tsc --noEmit",
+    "typecheck:backend": "cd backend && npm run typecheck || cd backend && npx tsc --noEmit",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend && npm run build",
+    "prepare": "husky"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexbie98/vibe-gains.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alexbie98/vibe-gains/issues"
+  },
+  "homepage": "https://github.com/alexbie98/vibe-gains#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.5"
+  }
+}

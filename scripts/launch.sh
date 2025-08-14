@@ -149,7 +149,7 @@ case $MODE in
         ;;
     
     "test")
-        echo -e "${YELLOW}🧪 Running API tests...${NC}"
+        echo -e "${YELLOW}🧪 Running Jest unit and integration tests...${NC}"
         cd "$PROJECT_ROOT/backend"
         "$SCRIPT_DIR/backend-launch.sh" test
         ;;
@@ -167,7 +167,7 @@ case $MODE in
         echo "  frontend   - Start only frontend development server"
         echo "  backend    - Start only backend development server"
         echo "  prod       - Build both frontend and backend for production"
-        echo "  test       - Run API test suite"
+        echo "  test       - Run Jest unit and integration tests"
         echo "  clear-data - Clear all database data"
         echo ""
         echo "Usage: ./launch.sh [mode]"

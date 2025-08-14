@@ -201,6 +201,66 @@ export const createLiftsRouter = (database: Database) => {
     }
   });
 
+  /**
+   * @swagger
+   * /api/lifts/{id}:
+   *   put:
+   *     summary: Update an existing lift
+   *     tags: [Lifts]
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         schema:
+   *           type: string
+   *         description: The lift ID
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/UpdateLiftRequest'
+   *           example:
+   *             exercise: "Bench Press"
+   *             sets:
+   *               - weight: 195
+   *                 reps: 8
+   *               - weight: 195
+   *                 reps: 6
+   *               - weight: 185
+   *                 reps: 10
+   *             date: "Mon Jan 16 2024"
+   *     responses:
+   *       200:
+   *         description: Lift updated successfully
+   *         content:
+   *           application/json:
+   *             schema:
+   *               allOf:
+   *                 - $ref: '#/components/schemas/ApiResponse'
+   *                 - type: object
+   *                   properties:
+   *                     data:
+   *                       $ref: '#/components/schemas/Lift'
+   *       400:
+   *         description: Bad request - validation errors
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ApiResponse'
+   *       404:
+   *         description: Lift not found
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ApiResponse'
+   *       500:
+   *         description: Internal server error
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ApiResponse'
+   */
   // PUT /api/lifts/:id - Update lift
   router.put('/:id', async (req: Request<{ id: string }, ApiResponse, UpdateLiftRequest>, res: Response<ApiResponse>) => {
     try {
