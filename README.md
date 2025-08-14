@@ -1,6 +1,8 @@
 # Vibe Gains 💪
 
-A full-stack lift tracking application that helps you monitor your strength training progress and visualize your gains over time. This project was vibecoded by Claude. I have no idea what's going on in the code or even this README.
+A lift tracking application that helps you monitor your strength training progress and visualize your gains over time. 
+
+This project was 100% vibecoded by Claude. I have no idea what's going on in the code; I barely understand this README.
 
 ![Vibe Gains Screenshot](./screenshot.png)
 
