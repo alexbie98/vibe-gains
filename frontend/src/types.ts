@@ -19,9 +19,11 @@ export interface Lift {
 export interface LiftContextType {
   lifts: Lift[];
   addLift: (exercise: string, sets: Set[], date?: string) => Promise<void>;
+  updateLift: (id: string, exercise: string, sets: Set[], date?: string) => Promise<void>;
   deleteLift: (id: string | number) => Promise<void>;
   searchTerm: string;
   setSearchTerm: (term: string) => void;
+  onEditLift: (lift: Lift) => void;
 }
 
 export interface ChartDataPoint {

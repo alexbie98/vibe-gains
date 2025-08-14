@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Select from 'react-select';
 import { useLiftContext } from '../context/LiftContext';
-import { Set } from '../types';
+import { Set, Lift } from '../types';
 import { COMMON_EXERCISES, Exercise } from '../constants/exercises';
 
 const Modal = styled.div<{ isOpen: boolean }>`
@@ -186,16 +186,41 @@ const SaveButton = styled.button`
 interface AddLiftModalProps {
   isOpen: boolean;
   onClose: () => void;
+  editLift?: Lift; // Optional lift to edit
 }
 
 
-const AddLiftModal: React.FC<AddLiftModalProps> = ({ isOpen, onClose }) => {
-  const { addLift } = useLiftContext();
+const AddLiftModal: React.FC<AddLiftModalProps> = ({ isOpen, onClose, editLift }) => {
+  const { addLift, updateLift } = useLiftContext();
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
   const [sets, setSets] = useState<Set[]>([{ weight: 0, reps: 0 }]);
   const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split('T')[0]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Determine if we're in edit mode
+  const isEditMode = !!editLift;
+
+  // Effect to populate form when editing
+  useEffect(() => {
+    if (editLift) {
+      // Find matching exercise in COMMON_EXERCISES or create custom option
+      const exerciseOption = COMMON_EXERCISES.find(ex => ex.value === editLift.exercise) || 
+                           { value: editLift.exercise, label: editLift.exercise };
+      setSelectedExercise(exerciseOption);
+      setSets(editLift.sets);
+      
+      // Convert date string to input format (YYYY-MM-DD)
+      const liftDate = new Date(editLift.date);
+      const formattedDate = liftDate.toISOString().split('T')[0];
+      setSelectedDate(formattedDate);
+    } else {
+      // Reset form for add mode
+      setSelectedExercise(null);
+      setSets([{ weight: 0, reps: 0 }]);
+      setSelectedDate(new Date().toISOString().split('T')[0]);
+    }
+  }, [editLift]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -214,11 +239,15 @@ const AddLiftModal: React.FC<AddLiftModalProps> = ({ isOpen, onClose }) => {
 
     try {
       setIsSubmitting(true);
-      await addLift(selectedExercise.value, validSets, selectedDate);
+      if (isEditMode && editLift) {
+        await updateLift(editLift.id, selectedExercise.value, validSets, selectedDate);
+      } else {
+        await addLift(selectedExercise.value, validSets, selectedDate);
+      }
       handleClose();
     } catch (error) {
-      console.error('Failed to add lift:', error);
-      alert('Failed to add lift. Please try again.');
+      console.error(`Failed to ${isEditMode ? 'update' : 'add'} lift:`, error);
+      alert(`Failed to ${isEditMode ? 'update' : 'add'} lift. Please try again.`);
     } finally {
       setIsSubmitting(false);
     }
@@ -249,7 +278,7 @@ const AddLiftModal: React.FC<AddLiftModalProps> = ({ isOpen, onClose }) => {
     <Modal isOpen={isOpen}>
       <ModalContent>
         <ModalHeader>
-          <h2>Add Lift</h2>
+          <h2>{isEditMode ? 'Edit Lift' : 'Add Lift'}</h2>
           <CloseButton onClick={handleClose}>&times;</CloseButton>
         </ModalHeader>
         
@@ -320,7 +349,7 @@ const AddLiftModal: React.FC<AddLiftModalProps> = ({ isOpen, onClose }) => {
               Cancel
             </CancelButton>
             <SaveButton type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Saving...' : 'Save Lift'}
+              {isSubmitting ? (isEditMode ? 'Updating...' : 'Saving...') : (isEditMode ? 'Update Lift' : 'Save Lift')}
             </SaveButton>
           </FormActions>
         </Form>

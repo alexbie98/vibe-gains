@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useMemo, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo, useCallback, ReactNode } from 'react';
 import { Lift, Set, LiftContextType } from '../types';
 import { apiService } from '../services/api';
 
@@ -14,9 +14,10 @@ export const useLiftContext = () => {
 
 interface LiftProviderProps {
   children: ReactNode;
+  onEditLift: (lift: Lift) => void;
 }
 
-export const LiftProvider: React.FC<LiftProviderProps> = ({ children }) => {
+export const LiftProvider: React.FC<LiftProviderProps> = ({ children, onEditLift }) => {
   const [lifts, setLifts] = useState<Lift[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -53,12 +54,7 @@ export const LiftProvider: React.FC<LiftProviderProps> = ({ children }) => {
     });
   };
 
-  // Load lifts from API on mount
-  useEffect(() => {
-    loadLifts();
-  }, []);
-
-  const loadLifts = async () => {
+  const loadLifts = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -72,7 +68,12 @@ export const LiftProvider: React.FC<LiftProviderProps> = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  // Load lifts from API on mount
+  useEffect(() => {
+    loadLifts();
+  }, [loadLifts]);
 
   const addLift = async (exercise: string, sets: Set[], date?: string) => {
     try {
@@ -104,6 +105,39 @@ export const LiftProvider: React.FC<LiftProviderProps> = ({ children }) => {
     }
   };
 
+  const updateLift = async (id: string, exercise: string, sets: Set[], date?: string) => {
+    try {
+      setError(null);
+      
+      // Handle date properly, similar to addLift
+      let liftDate: string;
+      
+      if (date) {
+        // Parse the date properly to avoid timezone issues
+        const [year, month, day] = date.split('-').map(Number);
+        const localDate = new Date(year, month - 1, day); // month is 0-indexed
+        liftDate = localDate.toDateString();
+      } else {
+        liftDate = today;
+      }
+      
+      const updatedLift = await apiService.updateLift(id, {
+        exercise,
+        sets,
+        date: liftDate
+      });
+      
+      // Update the lifts array with the updated lift and re-enrich for PRs
+      const updatedLifts = lifts.map(lift => lift.id === id ? updatedLift : lift);
+      const enrichedLifts = enrichLiftsWithPRs(updatedLifts);
+      setLifts(enrichedLifts);
+    } catch (err) {
+      console.error('Failed to update lift:', err);
+      setError(err instanceof Error ? err.message : 'Failed to update lift');
+      throw err; // Re-throw to let component handle the error
+    }
+  };
+
   const deleteLift = async (id: string) => {
     try {
       setError(null);
@@ -119,12 +153,14 @@ export const LiftProvider: React.FC<LiftProviderProps> = ({ children }) => {
   const contextValue: LiftContextType & { loading: boolean; error: string | null; refreshLifts: () => Promise<void>; searchTerm: string; setSearchTerm: (term: string) => void; today: string } = {
     lifts,
     addLift,
+    updateLift,
     deleteLift: (id: string | number) => deleteLift(String(id)),
     loading,
     error,
     refreshLifts: loadLifts,
     searchTerm,
     setSearchTerm,
+    onEditLift,
     today
   };
 

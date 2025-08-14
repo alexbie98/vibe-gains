@@ -38,8 +38,7 @@ const PRBadge = styled.span`
   box-shadow: 0 2px 4px rgba(255, 215, 0, 0.3);
 `;
 
-const DeleteButton = styled.button`
-  background: #fc8181;
+const ActionButton = styled.button<{ variant?: 'edit' | 'delete' }>`
   border: none;
   color: white;
   width: 24px;
@@ -52,9 +51,12 @@ const DeleteButton = styled.button`
   justify-content: center;
   opacity: 0.8;
   transition: all 0.2s ease;
+  margin-left: 4px;
+
+  background: ${props => props.variant === 'edit' ? '#4299e1' : '#fc8181'};
 
   &:hover {
-    background: #f56565;
+    background: ${props => props.variant === 'edit' ? '#3182ce' : '#f56565'};
     opacity: 1;
     transform: scale(1.1);
   }
@@ -68,6 +70,11 @@ const DeleteButton = styled.button`
     cursor: not-allowed;
     transform: none;
   }
+`;
+
+const ActionButtons = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const LiftName = styled.div`
@@ -101,10 +108,14 @@ interface LiftCardProps {
 }
 
 const LiftCard: React.FC<LiftCardProps> = ({ lift }) => {
-  const { deleteLift } = useLiftContext();
+  const { deleteLift, onEditLift } = useLiftContext();
   const [isDeleting, setIsDeleting] = useState(false);
   const maxWeight = Math.max(...lift.sets.map(set => set.weight));
   const totalVolume = lift.sets.reduce((total, set) => total + (set.weight * set.reps), 0);
+
+  const handleEdit = () => {
+    onEditLift(lift);
+  };
 
   const handleDelete = async () => {
     if (window.confirm(`Are you sure you want to delete this ${lift.exercise} lift?`)) {
@@ -127,13 +138,23 @@ const LiftCard: React.FC<LiftCardProps> = ({ lift }) => {
           <LiftName>{lift.exercise}</LiftName>
           {lift.isPersonalRecord && <PRBadge>⭐ PR!</PRBadge>}
         </LiftNameContainer>
-        <DeleteButton 
-          onClick={handleDelete} 
-          disabled={isDeleting}
-          title="Delete lift"
-        >
-          ×
-        </DeleteButton>
+        <ActionButtons>
+          <ActionButton 
+            variant="edit"
+            onClick={handleEdit}
+            title="Edit lift"
+          >
+            ✎
+          </ActionButton>
+          <ActionButton 
+            variant="delete"
+            onClick={handleDelete} 
+            disabled={isDeleting}
+            title="Delete lift"
+          >
+            ×
+          </ActionButton>
+        </ActionButtons>
       </CardHeader>
       <Sets>
         {lift.sets.map((set, index) => (

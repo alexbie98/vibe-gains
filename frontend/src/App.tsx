@@ -3,24 +3,42 @@ import { LiftProvider } from './context/LiftContext';
 import Dashboard from './components/Dashboard';
 import AddLiftModal from './components/AddLiftModal';
 import { GlobalStyle, Container, Header, AddButton } from './styles/GlobalStyles';
+import { Lift } from './types';
 
 const App: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editLift, setEditLift] = useState<Lift | null>(null);
+
+  const handleEditLift = (lift: Lift) => {
+    setEditLift(lift);
+    setIsEditModalOpen(true);
+  };
+
+  const handleCloseEditModal = () => {
+    setIsEditModalOpen(false);
+    setEditLift(null);
+  };
 
   return (
-    <LiftProvider>
+    <LiftProvider onEditLift={handleEditLift}>
       <GlobalStyle />
       <Container>
         <Header>
           <h1>💪 Vibe Gains</h1>
         </Header>
         <Dashboard />
-        <AddButton onClick={() => setIsModalOpen(true)}>
+        <AddButton onClick={() => setIsAddModalOpen(true)}>
           +
         </AddButton>
         <AddLiftModal 
-          isOpen={isModalOpen} 
-          onClose={() => setIsModalOpen(false)} 
+          isOpen={isAddModalOpen} 
+          onClose={() => setIsAddModalOpen(false)} 
+        />
+        <AddLiftModal 
+          isOpen={isEditModalOpen} 
+          onClose={handleCloseEditModal}
+          editLift={editLift || undefined}
         />
       </Container>
     </LiftProvider>

@@ -78,12 +78,14 @@ const ListContainer = styled.div`
 interface RowProps {
   index: number;
   style: React.CSSProperties;
-  data: Lift[];
+  data: {
+    lifts: Lift[];
+  };
 }
 
 const Row: React.FC<RowProps> = ({ index, style, data }) => (
   <div style={style}>
-    <LiftCard lift={data[index]} />
+    <LiftCard lift={data.lifts[index]} />
   </div>
 );
 
@@ -155,7 +157,7 @@ const LiftHistory: React.FC = () => {
             width="100%"
             itemCount={filteredAndSortedLifts.length}
             itemSize={100}
-            itemData={filteredAndSortedLifts}
+            itemData={{ lifts: filteredAndSortedLifts }}
             overscanCount={5}
           >
             {Row}
