@@ -190,11 +190,19 @@ interface AddLiftModalProps {
 }
 
 
+const getTodayLocalDateString = (): string => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
 const AddLiftModal: React.FC<AddLiftModalProps> = ({ isOpen, onClose, editLift }) => {
   const { addLift, updateLift } = useLiftContext();
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
   const [sets, setSets] = useState<Set[]>([{ weight: 0, reps: 0 }]);
-  const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split('T')[0]);
+  const [selectedDate, setSelectedDate] = useState<string>(getTodayLocalDateString);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -218,7 +226,7 @@ const AddLiftModal: React.FC<AddLiftModalProps> = ({ isOpen, onClose, editLift }
       // Reset form for add mode
       setSelectedExercise(null);
       setSets([{ weight: 0, reps: 0 }]);
-      setSelectedDate(new Date().toISOString().split('T')[0]);
+      setSelectedDate(getTodayLocalDateString());
     }
   }, [editLift]);
 
@@ -256,7 +264,7 @@ const AddLiftModal: React.FC<AddLiftModalProps> = ({ isOpen, onClose, editLift }
   const handleClose = () => {
     setSelectedExercise(null);
     setSets([{ weight: 0, reps: 0 }]);
-    setSelectedDate(new Date().toISOString().split('T')[0]);
+    setSelectedDate(getTodayLocalDateString());
     onClose();
   };
 
