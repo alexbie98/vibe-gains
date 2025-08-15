@@ -82,3 +82,33 @@ npm test         # Run tests
 ## Database
 
 SQLite database stored in `data/lifts.db` with automatic initialization on first run.
+
+## CI/CD & Code Quality
+
+This project uses automated Git hooks powered by Husky to ensure code quality:
+
+### Pre-commit Checks
+Every commit automatically runs:
+- **TypeScript type checking** for both frontend and backend
+- **ESLint linting** for code style and best practices  
+- **Complete test suite** (45 unit + integration tests)
+- **Frontend tests** with Jest and React Testing Library
+
+### Commit Message Standards
+- **Conventional Commits** format enforced (e.g., `feat:`, `fix:`, `docs:`)
+- Automatic validation prevents improperly formatted commit messages
+- Supports standard types: feat, fix, docs, test, chore, refactor, perf, ci, build, revert
+
+### Running CI Checks Manually
+```bash
+# Run all pre-commit checks
+npm run lint:frontend && npm run typecheck:frontend && npm run test:backend
+
+# Individual checks
+npm run test              # Run complete test suite
+npm run lint:frontend     # Frontend linting
+npm run typecheck:frontend # Frontend type checking
+npm run test:backend      # Backend tests (45 tests)
+```
+
+To bypass hooks (not recommended): `git commit --no-verify`
