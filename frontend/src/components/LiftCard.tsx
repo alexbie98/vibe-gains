@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Lift } from '../types';
 import { useLiftContext } from '../context/LiftContext';
+import { calculateMaxOneRepMax } from '../utils/oneRepMax';
 
 const Card = styled.div`
   background: #f7fafc;
@@ -110,8 +111,8 @@ interface LiftCardProps {
 const LiftCard: React.FC<LiftCardProps> = ({ lift }) => {
   const { deleteLift, onEditLift } = useLiftContext();
   const [isDeleting, setIsDeleting] = useState(false);
+  const estimatedOneRM = calculateMaxOneRepMax(lift.sets);
   const maxWeight = Math.max(...lift.sets.map(set => set.weight));
-  const totalVolume = lift.sets.reduce((total, set) => total + (set.weight * set.reps), 0);
 
   const handleEdit = () => {
     onEditLift(lift);
@@ -164,7 +165,7 @@ const LiftCard: React.FC<LiftCardProps> = ({ lift }) => {
         ))}
       </Sets>
       <LiftDate>
-        {lift.date} • Max: {maxWeight}lbs • Volume: {totalVolume}lbs
+        {lift.date} • Max: {maxWeight}lbs • Est. 1RM: {estimatedOneRM.toFixed(1)}lbs
       </LiftDate>
     </Card>
   );

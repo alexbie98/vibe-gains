@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useMemo, useCallback, ReactNode } from 'react';
 import { Lift, Set, LiftContextType } from '../types';
 import { apiService } from '../services/api';
+import { calculateMaxOneRepMax } from '../utils/oneRepMax';
 
 const LiftContext = createContext<LiftContextType | undefined>(undefined);
 
@@ -35,20 +36,20 @@ export const LiftProvider: React.FC<LiftProviderProps> = ({ children, onEditLift
     const sortedLifts = [...lifts].sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
     
     return sortedLifts.map(lift => {
-      const maxWeight = Math.max(...lift.sets.map(set => set.weight));
+      const maxOneRepMax = calculateMaxOneRepMax(lift.sets);
       const previousRecord = exerciseRecords[lift.exercise] || 0;
       const isFirstInstance = !exerciseFirstSeen[lift.exercise];
       
       // A PR is only when you beat a previous record AND it's not the first time doing this exercise
-      const isPersonalRecord = !isFirstInstance && maxWeight > previousRecord;
+      const isPersonalRecord = !isFirstInstance && maxOneRepMax > previousRecord;
       
       // Mark this exercise as seen and update the record
       exerciseFirstSeen[lift.exercise] = true;
-      exerciseRecords[lift.exercise] = Math.max(exerciseRecords[lift.exercise] || 0, maxWeight);
+      exerciseRecords[lift.exercise] = Math.max(exerciseRecords[lift.exercise] || 0, maxOneRepMax);
       
       return {
         ...lift,
-        maxWeight,
+        maxWeight: maxOneRepMax,
         isPersonalRecord
       };
     });
