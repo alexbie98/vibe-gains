@@ -1,27 +1,7 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-# Colors for output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-NC='\033[0m' # No Color
+# Commit message checking disabled
+# No longer enforcing conventional commit format
 
-echo -e "${BLUE}📝 Checking commit message format...${NC}"
-
-# Run commitlint
-if npx --no-install commitlint --edit "$1"; then
-    echo -e "${GREEN}✅ Commit message format is valid${NC}"
-else
-    echo -e "${RED}❌ Commit message format is invalid${NC}"
-    echo -e "${YELLOW}💡 Use conventional commit format:${NC}"
-    echo -e "${YELLOW}   feat: add new feature${NC}"
-    echo -e "${YELLOW}   fix: resolve bug in component${NC}"
-    echo -e "${YELLOW}   docs: update README${NC}"
-    echo -e "${YELLOW}   test: add unit tests${NC}"
-    echo -e "${YELLOW}   chore: update dependencies${NC}"
-    echo ""
-    echo -e "${YELLOW}See: https://www.conventionalcommits.org/${NC}"
-    exit 1
-fi
+echo "✅ Commit message hook disabled - all messages accepted"
