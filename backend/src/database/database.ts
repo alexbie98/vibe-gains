@@ -42,6 +42,20 @@ class Database {
             updated_at TEXT NOT NULL,
             FOREIGN KEY (user_id) REFERENCES users (id)
           )
+        `);
+
+        // Create body_weights table
+        this.db.run(`
+          CREATE TABLE IF NOT EXISTS body_weights (
+            id TEXT PRIMARY KEY,
+            user_id TEXT NOT NULL,
+            weight REAL NOT NULL,
+            date TEXT NOT NULL,
+            timestamp TEXT NOT NULL,
+            created_at TEXT NOT NULL,
+            updated_at TEXT NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES users (id)
+          )
         `, (err) => {
           if (err) {
             reject(err);
@@ -54,6 +68,8 @@ class Database {
         this.db.run(`CREATE INDEX IF NOT EXISTS idx_lifts_user_id ON lifts (user_id)`);
         this.db.run(`CREATE INDEX IF NOT EXISTS idx_lifts_date ON lifts (date)`);
         this.db.run(`CREATE INDEX IF NOT EXISTS idx_lifts_exercise ON lifts (exercise)`);
+        this.db.run(`CREATE INDEX IF NOT EXISTS idx_body_weights_user_id ON body_weights (user_id)`);
+        this.db.run(`CREATE INDEX IF NOT EXISTS idx_body_weights_date ON body_weights (date)`);
       });
     });
   }

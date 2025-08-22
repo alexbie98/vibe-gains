@@ -34,6 +34,26 @@ export interface UpdateLiftRequest {
   date?: string;
 }
 
+export interface BodyWeight {
+  id: string;
+  userId: string;
+  weight: number;
+  date: string;
+  timestamp: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateBodyWeightRequest {
+  weight: number;
+  date?: string;
+}
+
+export interface UpdateBodyWeightRequest {
+  weight?: number;
+  date?: string;
+}
+
 export interface ApiResponse<T = any> {
   success: boolean;
   data?: T;

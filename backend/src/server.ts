@@ -9,6 +9,7 @@ import { swaggerSpec } from './docs/swagger';
 import Database from './database/database';
 import { createLiftsRouter } from './routes/lifts';
 import { createUsersRouter } from './routes/users';
+import { createBodyWeightsRouter } from './routes/bodyWeights';
 import { errorHandler, createRateLimit } from './middleware';
 import { RequestLogger } from './middleware/logger';
 
@@ -73,6 +74,7 @@ app.get('/health', (req, res) => {
 // API routes
 app.use('/api/lifts', createLiftsRouter(database));
 app.use('/api/users', createUsersRouter(database));
+app.use('/api/body-weights', createBodyWeightsRouter(database));
 
 // 404 handler
 app.use('*', (req, res) => {
