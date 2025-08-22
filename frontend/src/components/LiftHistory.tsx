@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
-import { FixedSizeList as List } from 'react-window';
 import { useLiftContext } from '../context/LiftContext';
 import LiftCard from './LiftCard';
 import { Lift } from '../types';
@@ -11,7 +10,7 @@ const Container = styled.div`
   padding: 25px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.1);
   backdrop-filter: blur(10px);
-  height: 400px;
+  height: 600px;
   display: flex;
   flex-direction: column;
 `;
@@ -72,22 +71,36 @@ const EmptyState = styled.div`
 
 const ListContainer = styled.div`
   flex: 1;
-  overflow: hidden;
+  overflow-y: auto;
+  padding-right: 8px; // Space for scrollbar
+  
+  // Custom scrollbar styling
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+  }
+  
+  &::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+  }
 `;
 
-interface RowProps {
-  index: number;
-  style: React.CSSProperties;
-  data: {
-    lifts: Lift[];
-  };
-}
-
-const Row: React.FC<RowProps> = ({ index, style, data }) => (
-  <div style={style}>
-    <LiftCard lift={data.lifts[index]} />
-  </div>
-);
+const LiftItem = styled.div`
+  margin-bottom: 15px;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+`;
 
 const LiftHistory: React.FC = () => {
   const { lifts, searchTerm, setSearchTerm } = useLiftContext();
@@ -152,16 +165,11 @@ const LiftHistory: React.FC = () => {
         </EmptyState>
       ) : (
         <ListContainer>
-          <List
-            height={300}
-            width="100%"
-            itemCount={filteredAndSortedLifts.length}
-            itemSize={100}
-            itemData={{ lifts: filteredAndSortedLifts }}
-            overscanCount={5}
-          >
-            {Row}
-          </List>
+          {filteredAndSortedLifts.map((lift) => (
+            <LiftItem key={lift.id}>
+              <LiftCard lift={lift} />
+            </LiftItem>
+          ))}
         </ListContainer>
       )}
     </Container>
