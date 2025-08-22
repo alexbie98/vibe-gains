@@ -1,4 +1,4 @@
-import { Lift, Set } from '../types';
+import { Lift, Set, BodyWeight } from '../types';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
 
@@ -12,6 +12,11 @@ export interface ApiResponse<T = any> {
 export interface CreateLiftRequest {
   exercise: string;
   sets: Set[];
+  date?: string;
+}
+
+export interface CreateBodyWeightRequest {
+  weight: number;
   date?: string;
 }
 
@@ -101,6 +106,42 @@ class ApiService {
 
   async getUsers(): Promise<any[]> {
     return this.request<any[]>('/users');
+  }
+
+  // Body weight operations
+  async getBodyWeights(startDate?: string, endDate?: string): Promise<BodyWeight[]> {
+    const params = new URLSearchParams();
+    if (startDate) params.append('startDate', startDate);
+    if (endDate) params.append('endDate', endDate);
+    
+    const query = params.toString();
+    const endpoint = `/body-weights${query ? `?${query}` : ''}`;
+    
+    return this.request<BodyWeight[]>(endpoint);
+  }
+
+  async getBodyWeight(id: string): Promise<BodyWeight> {
+    return this.request<BodyWeight>(`/body-weights/${id}`);
+  }
+
+  async createBodyWeight(bodyWeightData: CreateBodyWeightRequest): Promise<BodyWeight> {
+    return this.request<BodyWeight>('/body-weights', {
+      method: 'POST',
+      body: JSON.stringify(bodyWeightData),
+    });
+  }
+
+  async updateBodyWeight(id: string, bodyWeightData: Partial<CreateBodyWeightRequest>): Promise<BodyWeight> {
+    return this.request<BodyWeight>(`/body-weights/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(bodyWeightData),
+    });
+  }
+
+  async deleteBodyWeight(id: string): Promise<void> {
+    return this.request<void>(`/body-weights/${id}`, {
+      method: 'DELETE',
+    });
   }
 
   // Health check

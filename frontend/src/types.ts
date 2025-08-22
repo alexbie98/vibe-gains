@@ -26,7 +26,23 @@ export interface LiftContextType {
   onEditLift: (lift: Lift) => void;
 }
 
+export interface BodyWeight {
+  id: string;
+  userId: string;
+  weight: number;
+  date: string;
+  timestamp: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface ChartDataPoint {
   date: string;
   [exercise: string]: number | string | boolean;
+}
+
+export interface BodyWeightChartDataPoint {
+  date: string;
+  weight: number;
+  dateValue: number;
 }
