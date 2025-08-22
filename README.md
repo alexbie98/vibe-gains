@@ -74,8 +74,10 @@ npm test         # Run tests
 ## Features
 
 - **Track Lifts**: Record exercises with sets, weights, and reps
-- **Progress Visualization**: Charts showing strength progression over time
-- **Search & Filter**: Find specific exercises and date ranges
+- **Body Weight Tracking**: Monitor body weight changes with interactive charts
+- **Progress Visualization**: Charts showing strength progression and 1RM estimates over time
+- **Interactive Data Management**: Hover-to-delete functionality for data points
+- **Search & Filter**: Find specific exercises and date ranges with time filtering
 - **Today's Summary**: Quick overview of current day's workouts
 - **REST API**: Full CRUD operations with Swagger documentation
 
@@ -95,9 +97,9 @@ Every commit automatically runs:
 - **Frontend tests** with Jest and React Testing Library
 
 ### Commit Message Standards
-- **Conventional Commits** format enforced (e.g., `feat:`, `fix:`, `docs:`)
-- Automatic validation prevents improperly formatted commit messages
-- Supports standard types: feat, fix, docs, test, chore, refactor, perf, ci, build, revert
+- **Conventional Commits** format recommended (e.g., `feat:`, `fix:`, `docs:`)
+- Commit message validation is currently **disabled** - all messages accepted
+- Recommended types: feat, fix, docs, test, chore, refactor, perf, ci, build, revert
 
 ### Running CI Checks Manually
 ```bash
