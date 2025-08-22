@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import TodayLifts from './TodayLifts';
 import ProgressChart from './ProgressChart';
 import ParetoChart from './ParetoChart';
+import BodyWeightChart from './BodyWeightChart';
 import LiftHistory from './LiftHistory';
 
 const DashboardGrid = styled.div`
@@ -49,6 +50,7 @@ const Dashboard: React.FC = () => {
       <ChartsSection>
         <ProgressChart />
         <ParetoChart />
+        <BodyWeightChart />
       </ChartsSection>
     </DashboardGrid>
   );
