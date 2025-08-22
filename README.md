@@ -96,11 +96,6 @@ Every commit automatically runs:
 - **Complete test suite** (45 unit + integration tests)
 - **Frontend tests** with Jest and React Testing Library
 
-### Commit Message Standards
-- **Conventional Commits** format recommended (e.g., `feat:`, `fix:`, `docs:`)
-- Commit message validation is currently **disabled** - all messages accepted
-- Recommended types: feat, fix, docs, test, chore, refactor, perf, ci, build, revert
-
 ### Running CI Checks Manually
 ```bash
 # Run all pre-commit checks
