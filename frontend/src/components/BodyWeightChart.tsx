@@ -372,7 +372,7 @@ const BodyWeightChart: React.FC = () => {
               }}
             />
             <YAxis 
-              label={{ value: 'Weight (lbs)', angle: -90, position: 'insideLeft' }}
+              label={{ value: 'Weight', angle: -90, position: 'insideLeft' }}
               tick={{ fontSize: 12 }}
               width={80}
             />
