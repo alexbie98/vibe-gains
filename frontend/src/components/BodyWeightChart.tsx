@@ -350,7 +350,7 @@ const BodyWeightChart: React.FC = () => {
         <ResponsiveContainer width="100%" height="100%">
           <LineChart 
             data={chartData}
-            margin={{ top: 25, right: 35, left: 100, bottom: 120 }}
+            margin={{ top: 25, right: 35, left: 100, bottom: 60 }}
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis 
@@ -400,7 +400,7 @@ const BodyWeightChart: React.FC = () => {
     <>
       <Container>
         <HeaderContainer>
-          <Title>Body Weight Progress</Title>
+          <Title>Body Weight</Title>
           <HeaderControls>
             <RecordButton onClick={() => setIsModalOpen(true)}>
               Record Weight
