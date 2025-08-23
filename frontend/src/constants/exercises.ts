@@ -10,6 +10,7 @@ export const COMMON_EXERCISES: Exercise[] = [
   { value: 'Deadlift', label: 'Deadlift' },
   { value: 'Dumbbell Row', label: 'Dumbbell Row' },
   { value: 'Pull-ups', label: 'Pull-ups' },
+  { value: 'Pull-ups (banded)', label: 'Pull-ups (banded)' },
   { value: 'Chin-ups', label: 'Chin-ups' },
   { value: 'Dips', label: 'Dips' },
   { value: 'Lat Pulldown', label: 'Lat Pulldown' },
