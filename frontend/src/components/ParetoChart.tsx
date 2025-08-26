@@ -158,33 +158,21 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload, label })
 };
 
 // Calculate Pareto frontier for efficiency curve
-// Efficiency curve goes from top-left (high weight, low reps) to bottom-right (low weight, high reps)
+// A point is included only if no other point dominates it via:
+// (a) same reps, higher weight OR (b) same weight, higher reps
 const calculateParetoFrontier = (points: SetDataPoint[]): SetDataPoint[] => {
   if (points.length === 0) return [];
   
-  // For the efficiency frontier, we want points that represent optimal trade-offs
-  // A point is on the frontier if no other point is strictly better in BOTH dimensions
-  const paretoPoints: SetDataPoint[] = [];
-  
-  for (const candidate of points) {
-    let isDominated = false;
-    
+  // Filter points: include only if not dominated
+  const paretoPoints = points.filter(candidate => {
     // Check if this point is dominated by any other point
-    for (const other of points) {
-      if (other === candidate) continue;
-      
-      // A point is dominated only if another point is strictly better in BOTH dimensions:
-      // Higher weight AND higher reps (which would be impossible in practice, but we check anyway)
-      if (other.weight > candidate.weight && other.reps > candidate.reps) {
-        isDominated = true;
-        break;
-      }
-    }
-    
-    if (!isDominated) {
-      paretoPoints.push(candidate);
-    }
-  }
+    return !points.some(other => 
+      other !== candidate && (
+        (other.reps === candidate.reps && other.weight > candidate.weight) ||
+        (other.weight === candidate.weight && other.reps > candidate.reps)
+      )
+    );
+  });
   
   // Sort by reps ascending to ensure curve goes left to right (low reps to high reps)
   const sortedPoints = paretoPoints.sort((a, b) => a.reps - b.reps);
